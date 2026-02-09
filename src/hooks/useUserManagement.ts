@@ -1,4 +1,3 @@
-// src/hooks/useUserManagement.ts
 import { useState, useCallback } from 'react';
 import { 
   createUserWithEmailAndPassword, 
@@ -28,13 +27,11 @@ export const useUserManagement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // ✅ CREATE NEW USER
   const createUser = useCallback(async (userData: UserFormData): Promise<UserRegistrationResult> => {
     setLoading(true);
     setError('');
 
     try {
-      // 1. Create user with email/password
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         userData.email,
@@ -43,12 +40,10 @@ export const useUserManagement = () => {
       
       const user = userCredential.user;
 
-      // 2. Update display name
       await updateProfile(user, {
         displayName: userData.displayName
       });
 
-      // 3. Save user profile to Firestore
       await setDoc(doc(db, 'users', user.uid), {
         email: userData.email,
         displayName: userData.displayName,
@@ -57,7 +52,6 @@ export const useUserManagement = () => {
         createdAt: new Date().toISOString()
       });
 
-      // 4. Send verification email
       await sendEmailVerification(user);
 
       return { success: true, user };

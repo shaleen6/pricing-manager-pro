@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 interface UserProfile {
   uid: string;
   email: string;
-  role: 'admin' | 'pricing_manager' | 'viewer';  // ✅ Matches your doc
+  role: 'admin' | 'pricing_manager' | 'viewer';
 }
 
 interface Permissions {
@@ -36,20 +36,15 @@ export const useAuth = () => {
   return context;
 };
 
-// ✅ FIXED RBAC - Added pricing_manager
-const getPermissionsByRole = (role: UserProfile['role']): Permissions => {
-  console.log('🔍 getPermissionsByRole called with:', role);  // ✅ DEBUG
-  
+const getPermissionsByRole = (role: UserProfile['role']): Permissions => {  
   switch (role) {
     case 'admin':
       return { viewDashboard: true, searchRecords: true, uploadCSV: true, manageUsers: true, viewAnalytics: true };
-    case 'pricing_manager':  // ✅ YOUR ROLE
-      console.log('✅ pricing_manager permissions granted');
+    case 'pricing_manager':
       return { viewDashboard: true, searchRecords: true, uploadCSV: true, manageUsers: false, viewAnalytics: true };
     case 'viewer':
       return { viewDashboard: true, searchRecords: true, uploadCSV: false, manageUsers: false, viewAnalytics: false };
     default:
-      console.warn('⚠️ Unknown role:', role);  // ✅ DEBUG
       return { viewDashboard: false, searchRecords: false, uploadCSV: false, manageUsers: false, viewAnalytics: false };
   }
 };
@@ -60,7 +55,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [permissions, setPermissions] = useState<Permissions>({  // ✅ FIXED: Proper type
+  const [permissions, setPermissions] = useState<Permissions>({
     viewDashboard: false,
     searchRecords: false,
     uploadCSV: false,
@@ -72,28 +67,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log('🔍 Auth changed:', firebaseUser?.email || 'No user');
       
       if (firebaseUser) {
         try {
-          console.log('🔍 Fetching profile for UID:', firebaseUser.uid);
           const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
           
           let userProfile: UserProfile;
           
           if (userDoc.exists()) {
-            const data = userDoc.data();
-            console.log('🔍 Raw Firestore data:', data);  // ✅ DEBUG
-            
+            const data = userDoc.data();            
             userProfile = { 
               uid: firebaseUser.uid, 
               email: data.email || firebaseUser.email!,
               role: (data.role as UserProfile['role']) || 'viewer'
             };
-            
-            console.log('✅ Parsed userProfile:', userProfile);  // ✅ DEBUG
           } else {
-            console.warn('⚠️ No user doc found, using fallback');
+            console.warn('No user doc found, using fallback');
             userProfile = { 
               uid: firebaseUser.uid, 
               email: firebaseUser.email!, 
@@ -101,15 +90,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             };
           }
           
-          console.log('🔍 Calling setUser...');
           setUser(userProfile);
           
           const newPermissions = getPermissionsByRole(userProfile.role);
-          console.log('✅ Permissions calculated:', newPermissions);  // ✅ CRITICAL DEBUG
           setPermissions(newPermissions);
           
         } catch (error) {
-          console.error('❌ Profile fetch error:', error);
+          console.error('Profile fetch error:', error);
           const fallbackUser: UserProfile = { 
             uid: firebaseUser.uid, 
             email: firebaseUser.email!, 
@@ -119,7 +106,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setPermissions(getPermissionsByRole(fallbackUser.role));
         }
       } else {
-        console.log('🔍 No Firebase user - logging out');
         setUser(null);
         setPermissions({
           viewDashboard: false,
@@ -137,14 +123,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const logout = async () => {
-    console.log('🔍 Logout initiated');
     await signOut(auth);
     navigate("/");
   };
 
   const hasPermission = (permission: keyof Permissions): boolean => {
     const result = !!permissions[permission];
-    console.log(`🔍 hasPermission(${permission}):`, result, 'Current permissions:', permissions);  // ✅ DEBUG
     return result;
   };
 
@@ -160,8 +144,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     hasPermission,
     isRole 
   };
-
-  console.log('🔍 AuthContext value:', value);  // ✅ FINAL DEBUG
 
   return (
     <AuthContext.Provider value={value}>

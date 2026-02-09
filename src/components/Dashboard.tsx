@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
     return (
       <Box sx={{ p: 4, maxWidth: 600, mx: 'auto' }}>
         <Alert severity="error">
-          ❌ Insufficient permissions to view dashboard
+          Insufficient permissions to view dashboard
         </Alert>
       </Box>
     );

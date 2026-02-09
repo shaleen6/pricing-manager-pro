@@ -18,7 +18,7 @@ const LayoutContent: React.FC = () => {
   const [anchorElNotif, setAnchorElNotif] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const { drawerWidth, collapsed } = useLayout();  // ✅ Get collapsed state
+  const { drawerWidth, collapsed } = useLayout(); 
   const { user, logout } = useAuth();
 
   const handleDrawerToggle = () => {
@@ -135,7 +135,7 @@ const LayoutContent: React.FC = () => {
 
       <Box
         sx={{
-          ml: { lg: `${drawerWidth}px` },  // ✅ Only main content shifts
+          ml: { lg: `${drawerWidth}px` },
           width: { lg: `calc(100% - ${drawerWidth}px)` },
           mt: '64px',
           display: 'flex',

@@ -1,4 +1,3 @@
-// src/components/UserCreationModal.tsx - FULL VALIDATION
 import React, { useState } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
@@ -33,7 +32,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -41,14 +39,12 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
       newErrors.email = 'Invalid email format';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
-    // Display name validation
     if (!formData.displayName.trim()) {
       newErrors.displayName = 'Name is required';
     } else if (formData.displayName.trim().length < 2) {
@@ -66,7 +62,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
     const value = e.target.value;
     setFormData(prev => ({ ...prev, [field]: value }));
 
-    // Clear error when user types
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
@@ -89,7 +84,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
     if (result.success) {
       onSuccess(result.user);
       onClose();
-      // Reset form
       setFormData({ email: '', password: '', displayName: '', role: 'viewer' });
       setErrors({});
     }
@@ -104,7 +98,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
       <DialogTitle>Create New User</DialogTitle>
       
       <DialogContent sx={{ p: 3 }}>
-        {/* API Error */}
         {apiError && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {apiError}
@@ -112,7 +105,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
         )}
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          {/* Display Name */}
           <TextField
             label="Full Name *"
             value={formData.displayName}
@@ -123,7 +115,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
             required
           />
 
-          {/* Email */}
           <TextField
             label="Email *"
             type="email"
@@ -135,7 +126,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
             required
           />
 
-          {/* Password */}
           <TextField
             label="Password *"
             type="password"
@@ -151,7 +141,7 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
             required
           />
 
-          {/* Role */}
+ 
           <FormControl fullWidth>
             <InputLabel>Role</InputLabel>
             <Select
@@ -165,7 +155,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
             </Select>
           </FormControl>
 
-          {/* Role Info */}
           <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
             <Typography variant="caption" color="text.secondary">
               <strong>Viewer:</strong> Read-only access to pricing data

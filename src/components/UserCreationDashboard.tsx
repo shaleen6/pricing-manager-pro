@@ -1,4 +1,3 @@
-// src/components/UsersDashboard.tsx
 import React, { useState, useEffect } from 'react';
 import {
   Container, Typography, Button, Table, TableBody, TableCell,
@@ -24,7 +23,6 @@ const UsersDashboard: React.FC = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Load users from Firestore
   useEffect(() => {
     const q = query(
       collection(db, 'users'),
@@ -134,7 +132,6 @@ const UsersDashboard: React.FC = () => {
         </Table>
       </TableContainer>
 
-      {/* ✅ USER CREATION MODAL */}
       <UserCreationModal
         open={createModalOpen}
         onClose={() => setCreateModalOpen(false)}

@@ -1,14 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Container, AppBar, Toolbar, Typography, TextField, Button,  CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import UploadCSV from './UploadCSV'; 
-import { PricingRecord } from '../models/PricingRecords';
 import SearchRecords from './SearchPage';
-import EditModal from './EditPriceModal';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
-import { usePricingRecords } from '../hooks/usePricingRecords';
 import SignIn from './SignIn';
 import ProtectedRoute from './ProtectedRoute';
 import Layout from './Layout';
@@ -20,7 +17,7 @@ export const theme = createTheme({
 });
 
 const AppContent: React.FC = () => {
-  const { user, loading, logout } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>;

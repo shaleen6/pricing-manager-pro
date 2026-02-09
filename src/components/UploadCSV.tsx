@@ -33,7 +33,6 @@ interface PricingRecord {
 }
 
 const UploadCSV: React.FC = () => {
-  // States
   const [view, setView] = useState<'upload' | 'listing'>('upload');
   const [file, setFile] = useState<File | null>(null);
   const [parsedData, setParsedData] = useState<ParsedRow[]>([]);
@@ -44,13 +43,11 @@ const UploadCSV: React.FC = () => {
     severity: 'success' | 'error';
   }>({ open: false, message: '', severity: 'success' });
   
-  // Records listing
   const [records, setRecords] = useState<PricingRecord[]>([]);
   const [loadingRecords, setLoadingRecords] = useState(false);
   
   const { uploadCSV, uploading } = useCsvUpload();
 
-  // ✅ SNACKBAR FUNCTIONS
   const showSnackbar = (message: string, severity: 'success' | 'error' = 'success') => {
     setSnackbar({ open: true, message, severity });
   };
@@ -59,7 +56,6 @@ const UploadCSV: React.FC = () => {
     setSnackbar(prev => ({ ...prev, open: false }));
   };
 
-  // ✅ LOAD RECORDS FOR LISTING VIEW
   useEffect(() => {
     if (view === 'listing') {
       setLoadingRecords(true);
@@ -82,7 +78,6 @@ const UploadCSV: React.FC = () => {
     }
   }, [view]);
 
-  // Download template
   const downloadTemplate = useCallback(() => {
     const csvContent = `Store ID,SKU,Product Name,Price,Date
 IND-0456,ABC123,iPhone 15 Pro,999.99,2026-02-06
@@ -129,20 +124,16 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
     });
   }, []);
 
-  // ✅ UPLOAD HANDLER WITH SNACKBAR + VIEW SWITCH
   const handleUpload = useCallback(async () => {
     if (!file) return;
 
     try {
-      // Show progress snackbar
-      showSnackbar('⏳ Uploading to Firebase...', 'success');
+      showSnackbar('Uploading to Firebase...', 'success');
       
       await uploadCSV(file, uploadOption);
       
-      // Success snackbar + switch to listing
-      showSnackbar(`✅ Batch upload completed! ${parsedData.filter(r => r.valid).length} records saved`, 'success');
+      showSnackbar(`Batch upload completed! ${parsedData.filter(r => r.valid).length} records saved`, 'success');
       
-      // Clear form and show records after snackbar
       setTimeout(() => {
         setFile(null);
         setParsedData([]);
@@ -150,7 +141,7 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
       }, 2000);
       
     } catch (error: any) {
-      showSnackbar(`❌ Upload failed: ${error.message}`, 'error');
+      showSnackbar(`Upload failed: ${error.message}`, 'error');
     }
   }, [file, parsedData, uploadCSV, uploadOption]);
 
@@ -180,7 +171,6 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
     setParsedData([]);
   };
 
-  // ✅ UPLOAD VIEW (Your existing preview tables)
   if (view === 'upload') {
     return (
       <Container maxWidth="xl">
@@ -211,7 +201,6 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
           </Paper>
         ) : (
           <>
-            {/* SUMMARY STATS */}
             <Paper sx={{ p: 3, mb: 3 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box>
@@ -221,8 +210,8 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                  <Chip label={`✅ ${validRecords.length}`} color="success" />
-                  <Chip label={`❌ ${invalidRecords.length}`} color="error" />
+                  <Chip label={`${validRecords.length}`} color="success" />
+                  <Chip label={`${invalidRecords.length}`} color="error" />
                 </Box>
               </Box>
 
@@ -235,7 +224,6 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
               </FormControl>
             </Paper>
 
-            {/* VALID RECORDS PREVIEW */}
             <Paper sx={{ mb: 4 }}>
               <Box sx={{ p: 3, borderBottom: 1, borderColor: 'divider' }}>
                 <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -270,7 +258,6 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
               </TableContainer>
             </Paper>
 
-            {/* INVALID RECORDS PREVIEW */}
             {invalidRecords.length > 0 && (
               <Paper sx={{ mb: 4 }}>
                 <Box sx={{ p: 3, borderBottom: 1, borderColor: 'divider' }}>
@@ -311,7 +298,6 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
               </Paper>
             )}
 
-            {/* UPLOAD BUTTON */}
             <Box sx={{ display: 'flex', gap: 2, p: 3, bgcolor: 'grey.50', borderRadius: 2 }}>
               <Button
                 variant="contained"
@@ -327,7 +313,7 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
                     Uploading...
                   </>
                 ) : (
-                  `🚀 Upload ${validRecords.length} Valid Records`
+                  `Upload ${validRecords.length} Valid Records`
                 )}
               </Button>
               <Button variant="outlined" onClick={() => setFile(null)} sx={{ py: 1.5 }}>
@@ -337,7 +323,6 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
           </>
         )}
 
-        {/* ✅ GLOBAL SNACKBAR */}
         <Snackbar 
           open={snackbar.open} 
           autoHideDuration={6000}
@@ -357,7 +342,6 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
     );
   }
 
-  // ✅ RECORDS LISTING VIEW
   return (
     <Container maxWidth="xl">
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4, mt: 3 }}>

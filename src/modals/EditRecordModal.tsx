@@ -1,4 +1,3 @@
-// src/components/EditRecordModal.tsx - FULL VALIDATION
 import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
@@ -41,12 +40,10 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
 
   const { getRecordById, updateRecord } = usePricingRecords();
 
-  // Load record when modal opens
   useEffect(() => {
     if (open && recordId) {
       loadRecord(recordId);
     } else if (!open) {
-      // Reset form when closing
       setFormData({
         storeId: '',
         sku: '',
@@ -76,7 +73,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
     setLoading(false);
   };
 
-  // ✅ VALIDATION FUNCTIONS
   const validateStoreId = (value: string): string => {
     if (!value.trim()) return 'Store ID is required';
     if (!/^[A-Z]{3}-\d{4,}$/.test(value.trim())) {
@@ -115,15 +111,12 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
     return '';
   };
 
-  // ✅ REAL-TIME VALIDATION (onChange)
   const handleChange = (field: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFormData(prev => ({ ...prev, [field]: value }));
 
-    // Clear error on valid input
     if (!errors[field as keyof FormErrors]) return;
 
-    // Re-validate on change
     let error = '';
     switch (field) {
       case 'storeId': error = validateStoreId(value); break;
@@ -139,7 +132,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
     }));
   };
 
-  // ✅ FULL FORM VALIDATION (onSubmit)
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
@@ -148,14 +140,12 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
     newErrors.productName = validateProductName(formData.productName);
     newErrors.price = validatePrice(formData.price);
 
-    // Optional date validation
     const dateError = validateDate(formData.date);
     if (dateError) newErrors.date = dateError;
 
     setErrors(newErrors);
     setSubmitAttempted(true);
 
-    // Return true only if NO errors
     return Object.values(newErrors).every(error => !error);
   };
 
@@ -189,7 +179,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
     }
   };
 
-  // Show validation errors only after submit attempt or if field has been touched
   const shouldShowError = (field: keyof FormErrors) => {
     return submitAttempted || !!formData[field as keyof typeof formData];
   };
@@ -211,7 +200,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
       
       <DialogContent sx={{ p: 3 }}>
         <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: '1fr 1fr' }}>
-          {/* Store ID */}
           <TextField
             label="Store ID *"
             value={formData.storeId}
@@ -221,8 +209,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
             fullWidth
             required
           />
-          
-          {/* SKU */}
           <TextField
             label="SKU *"
             value={formData.sku}
@@ -232,8 +218,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
             fullWidth
             required
           />
-          
-          {/* Product Name */}
           <TextField
             label="Product Name *"
             value={formData.productName}
@@ -244,8 +228,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
             required
             sx={{ gridColumn: '1 / -1' }}
           />
-          
-          {/* Price */}
           <TextField
             label="Price ($) *"
             type="number"
@@ -257,8 +239,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
             required
             inputProps={{ step: '0.01', min: '0.01' }}
           />
-          
-          {/* Date */}
           <TextField
             label="Date"
             value={formData.date}
@@ -267,8 +247,6 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
             helperText={shouldShowError('date') ? errors.date : 'YYYY-MM-DD (optional)'}
             fullWidth
           />
-          
-          {/* Notes */}
           <TextField
             label="Notes"
             value={formData.notes}

@@ -16,7 +16,6 @@ const SideNav: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClo
   const { collapsed, toggleCollapse, drawerWidth } = useLayout();
   const { logout, hasPermission, user } = useAuth();
 
-  // ✅ RBAC-CONTROLLED MENU ITEMS
   const menuItems = [
     {
       text: 'Dashboard',
@@ -70,7 +69,6 @@ const SideNav: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClo
         }
       }}
     >
-      {/* 🎨 ENHANCED HEADER */}
       <Box sx={{ 
         p: collapsed ? 1.5 : 2.5, 
         height: 80,
@@ -94,7 +92,6 @@ const SideNav: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClo
           </Tooltip>
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
-            {/* Logo */}
             <Box sx={{ 
               width: 40, 
               height: 40, 
@@ -118,7 +115,6 @@ const SideNav: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClo
                 sx={{ fontSize: '0.7rem', height: 22 }}
               />             
             </Box>
-
             <Tooltip title="Collapse Menu">
               <IconButton
                 onClick={toggleCollapse}
@@ -134,7 +130,6 @@ const SideNav: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClo
         )}
       </Box>
 
-      {/* Navigation Items */}
       <Box sx={{ flexGrow: 1, overflow: 'auto', px: collapsed ? 0.5 : 1.5, py: 2 }}>
         <List disablePadding sx={{ gap: 0.5 }}>
           {menuItems.map((item, index) => {
@@ -197,7 +192,6 @@ const SideNav: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClo
             );
           })}
           
-          {/* Empty State */}
           {menuItems.length === 0 && !collapsed && (
             <Box sx={{ p: 4, textAlign: 'center', mt: 2 }}>
               <Paper sx={{ p: 3, bgcolor: '#f8fafc', border: '2px dashed #cbd5e1' }}>
@@ -215,8 +209,6 @@ const SideNav: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClo
         </List>
       </Box>
 
-
-      {/* Logout */}
       <Box sx={{ p: 1 }}>
         <Tooltip title={collapsed ? "Sign Out" : ''} placement="right" arrow>
           <ListItemButton 
