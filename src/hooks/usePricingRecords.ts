@@ -1,4 +1,3 @@
-// src/hooks/usePricingRecords.ts - FIXED WITH RESET
 import { useState, useCallback } from 'react';
 import { db } from '../firebase';
 import {
@@ -35,7 +34,6 @@ export const usePricingRecords = () => {
   const [records, setRecords] = useState<PricingRecord[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Country prefix search helper
   const countryPrefixQuery = (country: string) => {
     const prefix = `${country.toUpperCase()}-`;
     const endPrefix = `${country.toUpperCase()}-\uf8ff`;
@@ -113,13 +111,6 @@ export const usePricingRecords = () => {
         q = query(q, where('storeId', '==', filters.storeId));
       }
 
-      // if (filters.minPrice !== undefined) {
-      //   q = query(q, where('price', '>=', filters.minPrice));
-      // }
-      // if (filters.maxPrice !== undefined) {
-      //   q = query(q, where('price', '<=', filters.maxPrice));
-      // }
-
       const snapshot = await getDocs(q);
       const data = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -157,7 +148,6 @@ export const usePricingRecords = () => {
     }
   }, []);
 
-    // ✅ NEW: Get single record by ID
   const getRecordById = useCallback(async (id: string) => {
     try {
       const docRef = doc(db, 'pricing-records', id);
@@ -172,7 +162,6 @@ export const usePricingRecords = () => {
     }
   }, []);
 
-  // ✅ NEW: Update single record
   const updateRecord = useCallback(async (id: string, updatedData: Partial<PricingRecord>) => {
     try {
       const docRef = doc(db, 'pricing-records', id);
@@ -187,14 +176,13 @@ export const usePricingRecords = () => {
     }
   }, []);
 
-  // ✅ FIXED: ADD RESET FUNCTION
   const reset = useCallback(() => {
     setRecords([]);
-    fetchRecords(20); // Reload fresh data
+    fetchRecords(20); 
   }, [fetchRecords]);
 
   const refetch = useCallback(() => {
-    fetchRecords(20); // Reload fresh data
+    fetchRecords(20); 
   }, [fetchRecords]);
 
   return {
@@ -204,9 +192,9 @@ export const usePricingRecords = () => {
     searchRecords,
     filterRecords,
     searchProductName,
-    reset,  // ✅ NOW INCLUDED
-    getRecordById,    // ✅ NEW
+    reset,
+    getRecordById,  
     updateRecord,
-    refetch     // ✅ NEW
+    refetch
   };
 };

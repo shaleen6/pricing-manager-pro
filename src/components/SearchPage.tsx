@@ -1,4 +1,3 @@
-// src/components/SearchRecords.tsx - BUTTON-ONLY SEARCH
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container, TextField, Button, Paper, Chip, Table, TableBody,
@@ -70,7 +69,6 @@ const SearchRecords: React.FC = () => {
 
   return (
     <Container maxWidth="xl" sx={{ py: 3 }}>
-      {/* Header */}
       <Fade in={true} timeout={600}>
         <Box sx={{ mb: 4 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -101,14 +99,12 @@ const SearchRecords: React.FC = () => {
         </Box>
       </Fade>
 
-      {/* ✅ BUTTON-ONLY SEARCH */}
       <Paper elevation={3} sx={{ p: 4, mb: 4, borderRadius: 3 }}>
         <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
           Quick Search & Filter
         </Typography>
         
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'end' }}>
-          {/* ✅ NO ENTER KEY - BUTTON ONLY */}
           <Box sx={{ flex: 1, minWidth: 400, position: 'relative' }}>
             <TextField
               fullWidth
@@ -118,7 +114,6 @@ const SearchRecords: React.FC = () => {
               size="small"
               disabled={loading}
               placeholder="Type iPhone or IND-0456 then click Search button"
-              // ✅ REMOVED: onKeyPress={(e) => e.key === 'Enter' && handleTextSearch()}
             />
             {searchTerm && (
               <IconButton
@@ -137,7 +132,6 @@ const SearchRecords: React.FC = () => {
             )}
           </Box>
 
-          {/* Filters */}
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'end' }}>
             <FormControl size="small" sx={{ minWidth: 140 }} disabled={loading}>
               <InputLabel>Store</InputLabel>
@@ -169,9 +163,7 @@ const SearchRecords: React.FC = () => {
             </FormControl>
           </Box>
 
-          {/* Buttons */}
           <Box sx={{ display: 'flex', gap: 1 }}>
-            {/* ✅ SEARCH BUTTON - ONLY WAY TO SEARCH */}
             <Button
               variant="contained"
               size="medium"
@@ -203,7 +195,6 @@ const SearchRecords: React.FC = () => {
         {loading && <LinearProgress sx={{ mt: 2, borderRadius: 2 }} />}
       </Paper>
 
-      {/* Table */}
       <Card sx={{ borderRadius: 3, overflow: 'hidden', boxShadow: 3 }}>
         <TableContainer sx={{ maxHeight: '70vh' }}>
           <Table stickyHeader>

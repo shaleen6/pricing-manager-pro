@@ -37,7 +37,7 @@ const AppContent: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        <LayoutProvider>  {/* ✅ WRAP WITH LAYOUT PROVIDER */}
+        <LayoutProvider>
           <Routes>
             <Route element={<ProtectedRoute>
               <Layout />

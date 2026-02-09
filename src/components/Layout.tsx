@@ -43,7 +43,6 @@ const LayoutContent: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      {/* ✅ FIXED APPBAR - NO drawerWidth DEPENDENCY */}
       <AppBar
         position="fixed"
         sx={{
@@ -55,7 +54,6 @@ const LayoutContent: React.FC = () => {
         }}
       >
         <Toolbar>
-          {/* 📱 Mobile Menu + Brand */}
           <IconButton
             color="inherit"
             edge="start"
@@ -79,7 +77,6 @@ const LayoutContent: React.FC = () => {
             Pricing Manager Pro
           </Typography>
 
-          {/* ✅ FIXED POSITION: Right Section (Absolute from Right) */}
           <Box 
             sx={{ 
               position: 'absolute', 
@@ -91,7 +88,6 @@ const LayoutContent: React.FC = () => {
               gap: 1
             }}
           >
-            {/* 🔔 Notifications */}
             <Tooltip title="Notifications">
               <IconButton 
                 onClick={handleOpenNotif} 
@@ -107,7 +103,6 @@ const LayoutContent: React.FC = () => {
               </IconButton>
             </Tooltip>
 
-            {/* 👤 Profile - PERFECTLY STABLE */}
             <Tooltip title="Profile">
               <IconButton 
                 onClick={handleOpenUserMenu}
@@ -138,7 +133,6 @@ const LayoutContent: React.FC = () => {
         </Toolbar>
       </AppBar>
 
-      {/* 📱 SidNav & Main Content - SIMPLIFIED */}
       <Box
         sx={{
           ml: { lg: `${drawerWidth}px` },  // ✅ Only main content shifts
@@ -165,7 +159,6 @@ const LayoutContent: React.FC = () => {
         </Box>
       </Box>
 
-      {/* 👤 User Menu - Same as before */}
       <Menu
         anchorEl={anchorElUser}
         open={Boolean(anchorElUser)}
@@ -182,7 +175,6 @@ const LayoutContent: React.FC = () => {
           }
         }}
       >
-        {/* User Profile Card */}
         <Paper 
           sx={{ 
             p: 3, 
@@ -255,7 +247,6 @@ const LayoutContent: React.FC = () => {
         </MenuItem>
       </Menu>
 
-      {/* 🔔 Notifications Menu */}
       <Menu
         anchorEl={anchorElNotif}
         open={Boolean(anchorElNotif)}
@@ -264,7 +255,7 @@ const LayoutContent: React.FC = () => {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         PaperProps={{ sx: { minWidth: 280 } }}
       >
-        <MenuItem disabled>🔔 Notifications Coming Soon</MenuItem>
+        <MenuItem disabled>Coming Soon...</MenuItem>
       </Menu>
     </Box>
   );

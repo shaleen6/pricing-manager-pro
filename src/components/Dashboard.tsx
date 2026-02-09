@@ -1,7 +1,6 @@
-// src/pages/Dashboard.tsx - WORKS WITH YOUR FIREBASE AUTH
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';  // ✅ YOUR AUTH CONTEXT
+import { useAuth } from '../contexts/AuthContext';
 import {
   Box, Typography, Grid, Paper, Chip, 
   Avatar, Stack, Alert
@@ -50,7 +49,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box sx={{ p: { xs: 2, md: 3 } }}>
-      {/* Header with Role Badge */}
       <Stack direction="row" justifyContent="space-between" sx={{ mb: 4 }}>
         <Box>
           <Typography variant="h4" sx={{ fontWeight: 500, mb: 1 }}>
@@ -62,7 +60,6 @@ const Dashboard: React.FC = () => {
         </Box>
       </Stack>
 
-      {/* Stats - Always visible for dashboard access */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {stats.map((stat, index) => (
           <Grid key={index} {...({ item: true, xs: 12, sm: 6, lg: 3 } as any)}>
@@ -94,7 +91,6 @@ const Dashboard: React.FC = () => {
         ))}
       </Grid>
 
-      {/* Main Content */}
       <Grid container spacing={3}>
         <Grid {...({ item: true, xs: 12, lg: hasPermission('viewAnalytics') ? 8 : 12 } as any)}>
           <Paper sx={{ p: 4, height: 420, borderRadius: 2 }}>
@@ -107,14 +103,12 @@ const Dashboard: React.FC = () => {
           </Paper>
         </Grid>
 
-        {/* Quick Actions - FULLY RBAC CONTROLLED */}
         <Grid {...({ item: true, xs: 12, lg: 4 } as any)}>
           <Paper sx={{ p: 4, height: 420, borderRadius: 2 }}>
             <Typography variant="h6" fontWeight={600} sx={{ mb: 3 }}>
               Quick Actions
             </Typography>
             <Stack spacing={2}>
-              {/* Search Records */}
               <Paper 
                 sx={{ 
                   p: 3, borderRadius: 2, 
@@ -141,7 +135,6 @@ const Dashboard: React.FC = () => {
                 </Stack>
               </Paper>
 
-              {/* Upload CSV - Manager+ only */}
               <Paper 
                 sx={{ 
                   p: 3, borderRadius: 2, 
@@ -176,7 +169,6 @@ const Dashboard: React.FC = () => {
             <Typography variant="h6" fontWeight={600} sx={{ mb: 3 }}>
               Recent Activity
             </Typography>
-            {/* Activity list... */}
           </Paper>
         </Grid>
       </Grid>
