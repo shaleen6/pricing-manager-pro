@@ -1,7 +1,7 @@
 // src/contexts/AuthContext.tsx - DEBUGGED & FIXED
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { auth, db } from '../firebase';
-import { onAuthStateChanged, User, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 

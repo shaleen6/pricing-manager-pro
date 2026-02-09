@@ -18,7 +18,7 @@ const LayoutContent: React.FC = () => {
   const [anchorElNotif, setAnchorElNotif] = useState<null | HTMLElement>(null);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const { drawerWidth, collapsed } = useLayout(); 
+  const { drawerWidth } = useLayout(); 
   const { user, logout } = useAuth();
 
   const handleDrawerToggle = () => {

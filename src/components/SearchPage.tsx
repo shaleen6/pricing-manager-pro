@@ -6,7 +6,7 @@ import {
   Card, LinearProgress, Fade
 } from '@mui/material';
 import {
-  Search, Refresh, Edit as EditIcon, Block, Store, Public, UploadFile, Clear
+  Search, Refresh, Edit as EditIcon, Block, UploadFile, Clear
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { usePricingRecords, SearchFilters } from '../hooks/usePricingRecords';
@@ -28,10 +28,7 @@ const SearchRecords: React.FC = () => {
 
   const handleTextSearch = useCallback(() => {
     if (loading) return;
-    
-    const term = searchTerm.trim().toLowerCase();
-    console.log('🔍 Text search:', term);
-    
+    const term = searchTerm.trim().toLowerCase();    
     if (term) {
       if (term.includes('-') || /^[A-Z0-9]{3,}$/.test(term)) {
         searchRecords(term);

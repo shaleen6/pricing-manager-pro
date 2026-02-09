@@ -3,8 +3,7 @@ import {
   Container, Paper, Typography, TextField, Button, Box, Divider,
   Alert, CircularProgress, Link, Avatar, IconButton
 } from '@mui/material';
-import {
-  Email, Lock, Google, Visibility, VisibilityOff
+import { Lock, Visibility, VisibilityOff
 } from '@mui/icons-material';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';

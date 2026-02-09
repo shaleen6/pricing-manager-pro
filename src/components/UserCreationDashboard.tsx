@@ -4,7 +4,7 @@ import {
   TableContainer, TableHead, TableRow, Paper, Chip, Box,
   CircularProgress
 } from '@mui/material';
-import { Add, AdminPanelSettings, ManageAccounts } from '@mui/icons-material';
+import { Add, ManageAccounts } from '@mui/icons-material';
 import { UserCreationModal } from '../modals/UserCreationModal';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';

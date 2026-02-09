@@ -11,7 +11,7 @@ import {
 } from '@mui/icons-material';
 
 const Dashboard: React.FC = () => {
-  const { user, hasPermission, loading } = useAuth();
+  const { hasPermission, loading } = useAuth();
   const navigate = useNavigate();
 
   const stats = [

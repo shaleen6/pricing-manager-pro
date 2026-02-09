@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
   TextField, Button, CircularProgress, Alert, Box, FormControl,
-  InputLabel, Select, MenuItem, Chip,
-  Typography
+  InputLabel, Select, MenuItem, Typography
 } from '@mui/material';
 import { useUserManagement, UserFormData } from '../hooks/useUserManagement';
 

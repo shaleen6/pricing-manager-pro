@@ -5,7 +5,7 @@ import {
   Select, MenuItem, FormControl, InputLabel, CircularProgress
 } from '@mui/material';
 import {
-  CloudUpload, CheckCircle, Error as ErrorIcon, Download, Refresh
+  CloudUpload, CheckCircle, Error as ErrorIcon, Download,
 } from '@mui/icons-material';
 import Papa from 'papaparse';
 import { useCsvUpload } from '../hooks/useCsvUpload';

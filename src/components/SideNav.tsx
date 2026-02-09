@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import {
   Dashboard, UploadFile, Search, VerifiedUser, Logout, 
-  ChevronLeft, ChevronRight, Menu
+  ChevronLeft, Menu
 } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import { useLayout } from '../contexts/LayoutContext';

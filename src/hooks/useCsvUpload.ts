@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { db, auth } from '../firebase';
 import { 
-  collection, addDoc, writeBatch, doc, serverTimestamp, 
+  collection, writeBatch, doc, serverTimestamp, 
   query, where, getDocs 
 } from 'firebase/firestore';
 import Papa from 'papaparse';

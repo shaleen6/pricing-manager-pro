@@ -1,11 +1,11 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Container, AppBar, Toolbar, Typography, TextField, Button,  CssBaseline } from '@mui/material';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Container, CssBaseline } from '@mui/material';
+import { Routes, Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import UploadCSV from './UploadCSV'; 
 import SearchRecords from './SearchPage';
-import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import SignIn from './SignIn';
 import ProtectedRoute from './ProtectedRoute';
 import Layout from './Layout';
@@ -36,9 +36,10 @@ const AppContent: React.FC = () => {
       <CssBaseline />
         <LayoutProvider>
           <Routes>
-            <Route element={<ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>}>
+            <Route element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/search" element={<SearchRecords />} />
               <Route path="/upload" element={<UploadCSV />} />
