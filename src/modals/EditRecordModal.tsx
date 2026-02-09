@@ -1,8 +1,7 @@
-// src/components/EditRecordModal.tsx - FULL VALIDATION
 import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Button, CircularProgress, Alert, Box, Typography
+  TextField, Button, CircularProgress, Box, Typography, Alert, Divider
 } from '@mui/material';
 import { usePricingRecords } from '../hooks/usePricingRecords';
 
@@ -41,57 +40,63 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
 
   const { getRecordById, updateRecord } = usePricingRecords();
 
-  // Load record when modal opens
   useEffect(() => {
     if (open && recordId) {
       loadRecord(recordId);
     } else if (!open) {
-      // Reset form when closing
-      setFormData({
-        storeId: '',
-        sku: '',
-        productName: '',
-        price: '',
-        date: '',
-        notes: ''
-      });
-      setErrors({});
-      setSubmitAttempted(false);
+      resetForm();
     }
   }, [open, recordId]);
 
+  const resetForm = () => {
+    setFormData({
+      storeId: '',
+      sku: '',
+      productName: '',
+      price: '',
+      date: '',
+      notes: ''
+    });
+    setErrors({});
+    setSubmitAttempted(false);
+  };
+
   const loadRecord = async (id: string) => {
     setLoading(true);
-    const record = await getRecordById(id);
-    if (record) {
-      setFormData({
-        storeId: record.storeId || '',
-        sku: record.sku || '',
-        productName: record.productName || '',
-        price: record.price?.toString() || '',
-        date: record.date || '',
-        notes: record.notes || ''
-      });
+    try {
+      const record = await getRecordById(id);
+      if (record) {
+        setFormData({
+          storeId: record.storeId || '',
+          sku: record.sku || '',
+          productName: record.productName || '',
+          price: record.price?.toString() || '',
+          date: record.date || '',
+          notes: record.notes || ''
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load record:', error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  // ✅ VALIDATION FUNCTIONS
-  const validateStoreId = (value: string): string => {
+    const validateStoreId = (value: string): string => {
     if (!value.trim()) return 'Store ID is required';
-    if (!/^[A-Z]{3}-\d{4,}$/.test(value.trim())) {
-      return 'Format: XXX-1234 (e.g., IND-0456)';
+    if (!/^[A-Z]{2,4}-\d{4,}$/.test(value.trim())) {
+        return 'Format: XX-1234 (e.g., UK-0123, IND-0456, USA-0789)';
     }
     return '';
-  };
+    };
 
-  const validateSku = (value: string): string => {
+    const validateSku = (value: string): string => {
     if (!value.trim()) return 'SKU is required';
     if (!/^[A-Z0-9]{6,12}$/.test(value.trim())) {
-      return '6-12 uppercase letters/numbers only';
+        return '6-12 uppercase letters/numbers only';
     }
     return '';
-  };
+    };
 
   const validateProductName = (value: string): string => {
     if (!value.trim()) return 'Product name is required';
@@ -115,15 +120,10 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
     return '';
   };
 
-  // ✅ REAL-TIME VALIDATION (onChange)
   const handleChange = (field: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFormData(prev => ({ ...prev, [field]: value }));
 
-    // Clear error on valid input
-    if (!errors[field as keyof FormErrors]) return;
-
-    // Re-validate on change
     let error = '';
     switch (field) {
       case 'storeId': error = validateStoreId(value); break;
@@ -139,33 +139,26 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
     }));
   };
 
-  // ✅ FULL FORM VALIDATION (onSubmit)
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-
     newErrors.storeId = validateStoreId(formData.storeId);
     newErrors.sku = validateSku(formData.sku);
     newErrors.productName = validateProductName(formData.productName);
     newErrors.price = validatePrice(formData.price);
 
-    // Optional date validation
     const dateError = validateDate(formData.date);
     if (dateError) newErrors.date = dateError;
 
     setErrors(newErrors);
     setSubmitAttempted(true);
 
-    // Return true only if NO errors
     return Object.values(newErrors).every(error => !error);
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) return;
-
-    if (!recordId) return;
+    if (!validateForm() || !recordId) return;
 
     setLoading(true);
-
     try {
       const success = await updateRecord(recordId, {
         storeId: formData.storeId.trim(),
@@ -180,124 +173,158 @@ export const EditRecordModal: React.FC<EditRecordModalProps> = ({
         onSuccess();
         onClose();
       } else {
-        setErrors({ ...errors, price: 'Failed to save record' });
+        alert('Failed to update record');
       }
     } catch (err: any) {
-      setErrors({ ...errors, price: err.message || 'Update failed' });
+      console.error('Update error:', err);
+      alert('Update failed: ' + err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // Show validation errors only after submit attempt or if field has been touched
-  const shouldShowError = (field: keyof FormErrors) => {
-    return submitAttempted || !!formData[field as keyof typeof formData];
-  };
+    const shouldShowError = (field: keyof FormErrors): boolean => {
+    return !!errors[field] && (submitAttempted || !!formData[field as keyof typeof formData]);
+    };
+
 
   if (loading && !formData.storeId) {
     return (
       <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-        <DialogContent sx={{ p: 4, textAlign: 'center' }}>
-          <CircularProgress />
-          <Typography sx={{ mt: 2 }}>Loading record...</Typography>
+        <DialogContent sx={{ p: 6, textAlign: 'center' }}>
+          <CircularProgress size={48} sx={{ mb: 2 }} />
+          <Typography variant="h6" color="text.secondary">
+            Loading record...
+          </Typography>
         </DialogContent>
       </Dialog>
     );
   }
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Edit Pricing Record</DialogTitle>
-      
-      <DialogContent sx={{ p: 3 }}>
-        <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: '1fr 1fr' }}>
-          {/* Store ID */}
+    <Dialog open={open} onClose={!loading ? onClose : undefined} maxWidth="sm" fullWidth>
+      <DialogTitle sx={{ pb: 1, pt: 3 }}>
+        <Typography variant="h5" fontWeight={700} color="primary.main">
+          Edit Pricing Record
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          Update store pricing information
+        </Typography>
+      </DialogTitle>
+
+      <DialogContent sx={{ p: { xs: 3, md: 4 }, pt: 0 }}>
+        {Object.values(errors).some(e => e) && (
+          <Alert severity="warning" sx={{ mb: 3, borderRadius: 2 }}>
+            Please fix the errors below before saving.
+          </Alert>
+        )}
+
+        <Box sx={{ 
+          display: 'grid', 
+          gap: 3, 
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          alignItems: 'end',
+          paddingTop: 2
+        }}>
           <TextField
-            label="Store ID *"
+            label="Store ID"
             value={formData.storeId}
             onChange={handleChange('storeId')}
-            error={!!errors.storeId && shouldShowError('storeId')}
+            error={shouldShowError('storeId')}
             helperText={shouldShowError('storeId') ? errors.storeId : 'e.g., IND-0456'}
             fullWidth
             required
+            disabled={loading}
           />
-          
-          {/* SKU */}
           <TextField
-            label="SKU *"
+            label="SKU"
             value={formData.sku}
             onChange={handleChange('sku')}
-            error={!!errors.sku && shouldShowError('sku')}
-            helperText={shouldShowError('sku') ? errors.sku : 'e.g., ABC123'}
+            error={shouldShowError('sku')}
+            helperText={shouldShowError('sku') ? errors.sku : 'e.g., ABC123XYZ'}
             fullWidth
             required
+            disabled={loading}
           />
-          
-          {/* Product Name */}
           <TextField
-            label="Product Name *"
+            label="Product Name"
             value={formData.productName}
             onChange={handleChange('productName')}
-            error={!!errors.productName && shouldShowError('productName')}
-            helperText={shouldShowError('productName') ? errors.productName : 'e.g., iPhone 15 Pro'}
+            error={shouldShowError('productName')}
+            helperText={shouldShowError('productName') ? errors.productName : 'Max 100 characters'}
             fullWidth
             required
-            sx={{ gridColumn: '1 / -1' }}
+            sx={{ gridColumn: { xs: '1 / -1', sm: '1 / -1' } }}
+            disabled={loading}
           />
-          
-          {/* Price */}
           <TextField
-            label="Price ($) *"
+            label="Price"
             type="number"
             value={formData.price}
             onChange={handleChange('price')}
-            error={!!errors.price && shouldShowError('price')}
+            error={shouldShowError('price')}
             helperText={shouldShowError('price') ? errors.price : 'e.g., 999.99'}
             fullWidth
             required
             inputProps={{ step: '0.01', min: '0.01' }}
+            disabled={loading}
           />
-          
-          {/* Date */}
           <TextField
             label="Date"
+            type="date"
             value={formData.date}
             onChange={handleChange('date')}
-            error={!!errors.date && shouldShowError('date')}
-            helperText={shouldShowError('date') ? errors.date : 'YYYY-MM-DD (optional)'}
+            error={shouldShowError('date')}
+            helperText={shouldShowError('date') ? errors.date : 'Optional'}
             fullWidth
+            InputLabelProps={{ shrink: true }}
+            disabled={loading}
           />
-          
-          {/* Notes */}
           <TextField
-            label="Notes"
+            label="Notes (Optional)"
             value={formData.notes}
             onChange={handleChange('notes')}
             multiline
-            rows={2}
+            rows={3}
             fullWidth
             sx={{ gridColumn: '1 / -1' }}
+            disabled={loading}
           />
         </Box>
       </DialogContent>
-      
-      <DialogActions sx={{ p: 3, gap: 2 }}>
+      <Divider />
+      <DialogActions sx={{ 
+        p: { xs: 2, md: 3 }, 
+        gap: 2, 
+        justifyContent: 'space-between',
+        flexWrap: 'wrap'
+      }}>
         <Button 
           onClick={onClose} 
           disabled={loading}
           variant="outlined"
+          size="large"
+          sx={{ 
+            borderWidth: 2,
+            px: 4
+          }}
         >
           Cancel
-        </Button>
+        </Button> 
         <Button
           variant="contained"
           onClick={handleSubmit}
           disabled={loading}
-          sx={{ ml: 'auto' }}
+          size="large"
+          sx={{ 
+            px: 4,
+            boxShadow: 3,
+            '&:hover': { boxShadow: 6 }
+          }}
         >
           {loading ? (
             <>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
+              <CircularProgress size={20} color="inherit" sx={{ mr: 1 }} />
               Saving...
             </>
           ) : (

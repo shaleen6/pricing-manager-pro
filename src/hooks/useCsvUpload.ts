@@ -1,8 +1,7 @@
-// src/hooks/useCsvUpload.ts - FIREBASE CSV SERVICE
 import { useCallback, useState } from 'react';
 import { db, auth } from '../firebase';
 import { 
-  collection, addDoc, writeBatch, doc, serverTimestamp, 
+  collection, writeBatch, doc, serverTimestamp, 
   query, where, getDocs 
 } from 'firebase/firestore';
 import Papa from 'papaparse';
@@ -34,7 +33,6 @@ export const useCsvUpload = () => {
     setUploading(true);
     
     try {      
-      // Parse CSV
       const parsed = await new Promise<any[]>((resolve) => {
         Papa.parse(file, {
           header: true,
@@ -46,7 +44,7 @@ export const useCsvUpload = () => {
       });
 
       const validRecords: PricingRecord[] = [];
-      parsed.slice(0, 3).forEach((row, i) => { // Test first 3 rows
+      parsed.slice(0, 3).forEach((row, i) => {
         const record: PricingRecord = {
           storeId: row['Store ID']?.trim() || '',
           sku: row['SKU']?.trim() || '',
@@ -60,7 +58,6 @@ export const useCsvUpload = () => {
         validRecords.push(record);
       });
 
-      // ✅ SIMPLE DIRECT UPLOAD - NO QUERIES
       const batch = writeBatch(db);
       const pricingRef = collection(db, 'pricing-records');
       
@@ -90,7 +87,6 @@ export const useCsvUpload = () => {
     }
   }, []);
 
-  // Append mode - skip existing records
   const handleAppendMode = async (records: PricingRecord[]) => {
     const batch = writeBatch(db);
     const pricingRef = collection(db, 'pricing-records');
@@ -117,7 +113,6 @@ export const useCsvUpload = () => {
     await batch.commit();
   };
 
-  // Overwrite mode - update or create
   const handleOverwriteMode = async (records: PricingRecord[]) => {
     const batch = writeBatch(db);
     const pricingRef = collection(db, 'pricing-records');
@@ -131,7 +126,6 @@ export const useCsvUpload = () => {
       const snapshot = await getDocs(q);
 
       if (snapshot.empty) {
-        // Create new
         const newDoc = doc(pricingRef);
         batch.set(newDoc, {
           ...record,
@@ -140,7 +134,6 @@ export const useCsvUpload = () => {
           updatedAt: serverTimestamp()
         });
       } else {
-        // Update existing
         const existingDoc = snapshot.docs[0];
         batch.update(existingDoc.ref, {
           ...record,

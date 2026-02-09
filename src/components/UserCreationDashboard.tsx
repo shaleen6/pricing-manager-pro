@@ -1,11 +1,10 @@
-// src/components/UsersDashboard.tsx
 import React, { useState, useEffect } from 'react';
 import {
   Container, Typography, Button, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Paper, Chip, Box,
   CircularProgress
 } from '@mui/material';
-import { Add, AdminPanelSettings, ManageAccounts } from '@mui/icons-material';
+import { Add, ManageAccounts } from '@mui/icons-material';
 import { UserCreationModal } from '../modals/UserCreationModal';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -24,7 +23,6 @@ const UsersDashboard: React.FC = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Load users from Firestore
   useEffect(() => {
     const q = query(
       collection(db, 'users'),
@@ -134,7 +132,6 @@ const UsersDashboard: React.FC = () => {
         </Table>
       </TableContainer>
 
-      {/* ✅ USER CREATION MODAL */}
       <UserCreationModal
         open={createModalOpen}
         onClose={() => setCreateModalOpen(false)}

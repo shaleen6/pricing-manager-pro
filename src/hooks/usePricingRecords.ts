@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { db } from '../firebase';
 import {
   collection, query, where, orderBy, getDocs, limit,
-  startAt, endAt, QueryDocumentSnapshot,
+  startAt, endAt,
   doc,
   updateDoc,
   serverTimestamp,
@@ -16,7 +16,7 @@ export interface PricingRecord {
   productName: string;
   price: number;
   date: string;
-  currency?: string;
+  currency: string;
   updatedBy?: string;
   notes?: string;
 }

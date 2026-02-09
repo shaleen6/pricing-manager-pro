@@ -1,26 +1,25 @@
-// src/theme/FigmaTheme.ts - ✅ TYPE-SAFE
 import { createTheme } from '@mui/material/styles';
 
 const figmaTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#6366F1', // Indigo 500
+      main: '#6366F1', 
       light: '#818CF8',
       dark: '#4F46E5'
     },
     secondary: {
-      main: '#10B981', // Emerald 500
+      main: '#10B981',
       light: '#34D399',
       dark: '#059669'
     },
     background: {
-      default: '#0F172A', // Slate 900 ← Use this for main surfaces
-      paper: '#1E293B'    // Slate 800 ← Use this for cards/tables
+      default: '#0F172A', 
+      paper: '#1E293B'
     },
     text: {
-      primary: '#F8FAFC', // Slate 50
-      secondary: '#CBD5E1' // Slate 300
+      primary: '#F8FAFC', 
+      secondary: '#CBD5E1'
     },
     success: { main: '#10B981' },
     warning: { main: '#F59E0B' },

@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
   Box, Typography, Grid, Paper, Chip, 
-  Avatar, Stack, Alert
+  Avatar, Stack, Alert,
 } from '@mui/material';
 import {
   Store, AttachMoney, Inventory2, Person, 
-  Search, FileDownload, ArrowDropUp, ArrowDropDown
+  Search, ArrowDropUp, ArrowDropDown, FileUpload
 } from '@mui/icons-material';
 
 const Dashboard: React.FC = () => {
-  const { user, hasPermission, loading } = useAuth();
+  const { hasPermission, loading } = useAuth();
   const navigate = useNavigate();
 
   const stats = [
@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
     return (
       <Box sx={{ p: 4, maxWidth: 600, mx: 'auto' }}>
         <Alert severity="error">
-          ❌ Insufficient permissions to view dashboard
+          Insufficient permissions to view dashboard
         </Alert>
       </Box>
     );
@@ -150,7 +150,7 @@ const Dashboard: React.FC = () => {
               >
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <Avatar sx={{ bgcolor: 'success.100', color: 'success.main' }}>
-                    <FileDownload />
+                    <FileUpload />
                   </Avatar>
                   <Box>
                     <Typography variant="body1" fontWeight={500}>Upload CSV</Typography>

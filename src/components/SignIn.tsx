@@ -3,8 +3,7 @@ import {
   Container, Paper, Typography, TextField, Button, Box, Divider,
   Alert, CircularProgress, Link, Avatar, IconButton
 } from '@mui/material';
-import {
-  Email, Lock, Google, Visibility, VisibilityOff
+import { Lock, Visibility, VisibilityOff
 } from '@mui/icons-material';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -21,7 +20,6 @@ const SignIn: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<'email' | 'google'>('email'); // 'email' | 'google'
 
-  // Redirect if already signed in
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
@@ -111,7 +109,6 @@ const SignIn: React.FC = () => {
 
           <Divider sx={{ width: '100%', my: 2 }}>OR</Divider> */}
 
-          {/* Email/Password Form */}
           {tab === 'email' && (
             <Box component="form" onSubmit={handleEmailSignIn} sx={{ mt: 1, width: '100%' }}>
               <TextField
