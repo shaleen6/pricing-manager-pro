@@ -94,7 +94,11 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Create New User</DialogTitle>
+      <DialogTitle sx={{ pb: 1, pt: 3 }}>
+        <Typography variant="h5" fontWeight={700} color="primary.main">
+          Create new user
+        </Typography>
+      </DialogTitle>
       
       <DialogContent sx={{ p: 3 }}>
         {apiError && (

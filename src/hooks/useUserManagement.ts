@@ -13,8 +13,10 @@ export interface UserFormData {
   email: string;
   password: string;
   displayName: string;
-  role?: 'admin' | 'pricing_manager' | 'viewer';
+  role?: Role;
 }
+
+export type Role = 'admin' | 'pricing_manager' | 'viewer';
 
 interface UserRegistrationResult {
   success: boolean;
