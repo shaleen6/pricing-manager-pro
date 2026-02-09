@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { usePricingRecords, SearchFilters } from '../hooks/usePricingRecords';
 import { EditRecordModal } from '../modals/EditRecordModal';
 import { useAuth } from '../contexts/AuthContext';
+import { getCurrencySymbol } from '../utility/currency';
 
 const SearchRecords: React.FC = () => {
   const [filters, setFilters] = useState<SearchFilters>({});
@@ -139,6 +140,7 @@ const SearchRecords: React.FC = () => {
               >
                 <MenuItem value="">All Stores</MenuItem>
                 <MenuItem value="IND-0456">IND-0456</MenuItem>
+                <MenuItem value="IND-0457">IND-0457</MenuItem>
                 <MenuItem value="USA-0789">USA-0789</MenuItem>
                 <MenuItem value="UK-0123">UK-0123</MenuItem>
               </Select>
@@ -154,8 +156,7 @@ const SearchRecords: React.FC = () => {
                 <MenuItem value="">All Countries</MenuItem>
                 <MenuItem value="IND">India</MenuItem>
                 <MenuItem value="USA">USA</MenuItem>
-                <MenuItem value="MEX">Mexico</MenuItem>
-                <MenuItem value="GBR">UK</MenuItem>
+                <MenuItem value="UK">UK</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -200,9 +201,9 @@ const SearchRecords: React.FC = () => {
                 <TableCell sx={{ fontWeight: 700 }}>Store ID</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>SKU</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>Product</TableCell>
-                <TableCell sx={{ fontWeight: 700, textAlign: 'right' }}>Price</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>Price</TableCell>
                 <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
-                {showEditColumn && <TableCell align="right" sx={{ fontWeight: 700 }}>Actions</TableCell>}
+                {showEditColumn && <TableCell sx={{ fontWeight: 700 }}>Actions</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -234,24 +235,18 @@ const SearchRecords: React.FC = () => {
                         {record.productName}
                       </Typography>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell>
                       <Typography variant="h6" fontWeight={700} color="primary.main">
-                        ${record.price.toFixed(2)}
+                        {getCurrencySymbol(record.currency)}{record.price.toFixed(2)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Chip label={record.date} size="small" variant="outlined" />
                     </TableCell>
-                    {showEditColumn ? (
-                      <TableCell align="right">
+                    {showEditColumn && (
+                      <TableCell>
                         <IconButton size="small" onClick={() => handleEdit(record.id)}>
                           <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                    ) : (
-                      <TableCell align="right">
-                        <IconButton size="small" disabled>
-                          <Block fontSize="small" />
                         </IconButton>
                       </TableCell>
                     )}

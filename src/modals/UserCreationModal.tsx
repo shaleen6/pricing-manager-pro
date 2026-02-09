@@ -103,9 +103,9 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
           </Alert>
         )}
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, paddingTop: 2 }}>
           <TextField
-            label="Full Name *"
+            label="Full Name"
             value={formData.displayName}
             onChange={handleChange('displayName')}
             error={shouldShowError('displayName')}
@@ -115,7 +115,7 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
           />
 
           <TextField
-            label="Email *"
+            label="Email"
             type="email"
             value={formData.email}
             onChange={handleChange('email')}
@@ -126,7 +126,7 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
           />
 
           <TextField
-            label="Password *"
+            label="Password"
             type="password"
             value={formData.password}
             onChange={handleChange('password')}
@@ -139,8 +139,6 @@ export const UserCreationModal: React.FC<UserCreationModalProps> = ({
             fullWidth
             required
           />
-
- 
           <FormControl fullWidth>
             <InputLabel>Role</InputLabel>
             <Select

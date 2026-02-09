@@ -184,7 +184,7 @@ USA-0789,DEF456,MacBook Pro 16",2499.99,2026-02-05`;
           onClick={downloadTemplate}
           sx={{ mb: 4 }}
         >
-          📥 Download Template CSV
+          Download Template CSV
         </Button>
 
         {!file ? (

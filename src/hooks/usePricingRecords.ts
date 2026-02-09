@@ -16,7 +16,7 @@ export interface PricingRecord {
   productName: string;
   price: number;
   date: string;
-  currency?: string;
+  currency: string;
   updatedBy?: string;
   notes?: string;
 }
